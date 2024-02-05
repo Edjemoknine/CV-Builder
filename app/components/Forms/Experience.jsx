@@ -29,6 +29,13 @@ const Experience = () => {
     trigger,
   } = useForm({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      company: data?.company,
+      position: data?.position,
+      description: data?.description,
+      from: data?.from,
+      to: data?.to,
+    },
   });
 
   const onSubmitForm = (data) => {

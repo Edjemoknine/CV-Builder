@@ -10,9 +10,11 @@ const formSchema = z.object({
   eductionLevel: z
     .string()
     .min(3, { message: "Please enter Education Level is Required" }),
+  field: z.string(),
   institution: z
     .string()
     .min(3, { message: "Please enter institution is Required" }),
+  Instcity: z.string(),
   GraduationYear: z
     .string()
     .min(4, { message: "Please enter Graduation Year is Required" }),
@@ -28,6 +30,13 @@ const Education = () => {
     trigger,
   } = useForm({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      eductionLevel: data?.eductionLevel,
+      field: data?.field,
+      institution: data?.institution,
+      Instcity: data?.Instcity,
+      GraduationYear: data?.GraduationYear,
+    },
   });
 
   const onSubmitForm = (data) => {
@@ -47,22 +56,41 @@ const Education = () => {
         onSubmit={handleSubmit(onSubmitForm)}
         className="flex flex-col gap-4 w-full"
       >
-        <div>
-          <label htmlFor="">Enter Highest Level of Education</label>
-          <input
-            className="px-4 p-2 mt-2 rounded-md border-gray-300 border w-full"
-            {...register("eductionLevel")}
-            type="text"
-            placeholder="Education Level"
-          />
-          <p>
-            {errors.eductionLevel?.message && (
-              <span className="text-red-500 text-[10px]">
-                {errors.eductionLevel.message}
-              </span>
-            )}
-          </p>
+        <div className="flex items-center gap-3">
+          <div>
+            <label htmlFor="">Enter Highest Level of Education</label>
+            <input
+              className="px-4 p-2 mt-2 rounded-md border-gray-300 border w-full"
+              {...register("eductionLevel")}
+              type="text"
+              placeholder="Education Level"
+            />
+            <p>
+              {errors.eductionLevel?.message && (
+                <span className="text-red-500 text-[10px]">
+                  {errors.eductionLevel.message}
+                </span>
+              )}
+            </p>
+          </div>
+          <div>
+            <label htmlFor="">Field of Education</label>
+            <input
+              className="px-4 p-2 mt-2 rounded-md border-gray-300 border w-full"
+              {...register("field")}
+              type="text"
+              placeholder="Education Filed"
+            />
+            <p>
+              {errors.field?.message && (
+                <span className="text-red-500 text-[10px]">
+                  {errors.field.message}
+                </span>
+              )}
+            </p>
+          </div>
         </div>
+
         <div>
           <label htmlFor="">Name of the last institution Attended </label>
           <input
@@ -75,6 +103,22 @@ const Education = () => {
             {errors.institution?.message && (
               <span className="text-red-500 text-[10px]">
                 {errors.institution.message}
+              </span>
+            )}
+          </p>
+        </div>
+        <div>
+          <label htmlFor=""> Address of Institution </label>
+          <input
+            className="px-4 mt-2 p-2 rounded-md border-gray-300 border w-full"
+            {...register("Instcity")}
+            type="text"
+            placeholder="institution Address"
+          />
+          <p>
+            {errors.Instcity?.message && (
+              <span className="text-red-500 text-[10px]">
+                {errors.Instcity.message}
               </span>
             )}
           </p>

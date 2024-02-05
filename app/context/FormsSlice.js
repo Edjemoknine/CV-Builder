@@ -1,6 +1,6 @@
 const { createSlice } = require("@reduxjs/toolkit");
 const initialState = {
-  data: [],
+  data: {},
   currentStep: 1,
 };
 const formsSlice = createSlice({
@@ -8,7 +8,7 @@ const formsSlice = createSlice({
   initialState,
   reducers: {
     addNewInf(state, { payload }) {
-      state.data.push(payload);
+      state.data = { ...state.data, ...payload };
     },
     nextStep(state, { payload }) {
       state.currentStep += 1;

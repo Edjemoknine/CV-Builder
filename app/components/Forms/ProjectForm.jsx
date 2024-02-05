@@ -27,6 +27,13 @@ const ProjectForm = () => {
     trigger,
   } = useForm({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: data?.title,
+      description: data?.description,
+      tech: data?.tech,
+      from: data?.from,
+      to: data?.to,
+    },
   });
 
   const onSubmitForm = (data) => {

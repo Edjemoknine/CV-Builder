@@ -15,6 +15,10 @@ const formSchema = z.object({
   phone: z
     .string()
     .min(3, { message: "Please enter Phone Number is Required" }),
+  Birthday: z.string(),
+  gender: z.string(),
+  address: z.string(),
+  country: z.string(),
 });
 const PersonalInfo = () => {
   const dispatch = useDispatch();
@@ -27,6 +31,16 @@ const PersonalInfo = () => {
     trigger,
   } = useForm({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      firstName: data?.firstName,
+      lastName: data?.lastName,
+      email: data?.email,
+      phone: data?.phone,
+      gender: data?.gender,
+      Birthday: data?.Birthday,
+      address: data?.address,
+      country: data?.country,
+    },
   });
 
   const onSubmitForm = (data) => {
@@ -115,16 +129,19 @@ const PersonalInfo = () => {
 
         <div>
           <label htmlFor="">Date of Birthday</label>
-          <input
-            className="px-4 p-2 mt-2 rounded-md border-gray-300 border w-full"
-            {...register("phone")}
-            type="date"
-            placeholder="+213 4555454"
-          />
+          <label htmlFor="date">
+            <input
+              id="date"
+              className="px-4 p-2 mt-2 rounded-md border-gray-300 border w-full"
+              {...register("Birthday")}
+              type="date"
+              placeholder="+213 4555454"
+            />
+          </label>
           <p>
-            {errors.phone?.message && (
+            {errors.Birthday?.message && (
               <span className="text-red-500 text-[10px]">
-                {errors.phone.message}
+                {errors.Birthday.message}
               </span>
             )}
           </p>
@@ -134,14 +151,14 @@ const PersonalInfo = () => {
           <label htmlFor="">Your Location Address</label>
           <input
             className="px-4 p-2 mt-2 rounded-md border-gray-300 border w-full"
-            {...register("phone")}
+            {...register("address")}
             type="text"
-            placeholder="+213 4555454"
+            placeholder="city, state, country"
           />
           <p>
-            {errors.phone?.message && (
+            {errors.address?.message && (
               <span className="text-red-500 text-[10px]">
-                {errors.phone.message}
+                {errors.address.message}
               </span>
             )}
           </p>
@@ -149,16 +166,18 @@ const PersonalInfo = () => {
 
         <div>
           <label htmlFor="">Select Your Gender</label>
-          <input
+          <select
             className="px-4 p-2 mt-2 rounded-md border-gray-300 border w-full"
-            {...register("phone")}
-            type=""
-            placeholder="+213 4555454"
-          />
+            {...register("gender")}
+          >
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+
           <p>
-            {errors.phone?.message && (
+            {errors.gender?.message && (
               <span className="text-red-500 text-[10px]">
-                {errors.phone.message}
+                {errors.gender.message}
               </span>
             )}
           </p>
@@ -167,14 +186,14 @@ const PersonalInfo = () => {
           <label htmlFor="">Your Country of Residence</label>
           <input
             className="px-4 p-2 mt-2 rounded-md border-gray-300 border w-full"
-            {...register("phone")}
+            {...register("country")}
             type=""
-            placeholder="+213 4555454"
+            placeholder="Your Country of Residence"
           />
           <p>
-            {errors.phone?.message && (
+            {errors.country?.message && (
               <span className="text-red-500 text-[10px]">
-                {errors.phone.message}
+                {errors.country.message}
               </span>
             )}
           </p>

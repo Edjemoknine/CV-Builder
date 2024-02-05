@@ -4,17 +4,12 @@ import { useForm } from "react-hook-form";
 
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addNewInf, nextStep, prevStep } from "@/app/context/FormsSlice";
+import { addNewInf, nextStep, prevStep } from "../../context/FormsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import UploadThing from "../UploadThing";
+import Image from "next/image";
 
-const MAX_FILE_SIZE = 5000000;
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
 const formSchema = z.object({
   aboutMe: z.string().min(50, {
     message: "Please enter describe yourself at least 50 characters",
@@ -23,21 +18,16 @@ const formSchema = z.object({
   communications: z
     .string()
     .min(3, { message: "Please enter language you can speak " }),
-  avatar: z
-    .any()
-    .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max image size is 5MB.`
-    )
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      "Only .jpg, .jpeg, .png and .webp formats are supported."
-    ),
+  avatar: z.any(),
 });
 const Submit = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((store) => store);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  // const params = new URLSearchParams(searchParams);
+  const imageURL = searchParams.get("imageUrl");
+
   const {
     formState: { errors },
     handleSubmit,
@@ -53,16 +43,6 @@ const Submit = () => {
   });
 
   const onSubmitForm = (data) => {
-    var imagesFiles = data.avatar;
-
-    // let arr = [];
-
-    // for (let i = 0; i < imagesFiles.length; i++) {
-    //   const data = await uploadCloud(imagesFiles[i]);
-    //   arr.push(data);
-    // }
-    // const images = arr?.map((image) => image.url);
-
     console.log(data);
     dispatch(addNewInf(data));
     router.push("/builder");
@@ -75,11 +55,23 @@ const Submit = () => {
         Please provide your name email, address and phone number.
       </p>
 
+      {imageURL ? (
+        <Image
+          src={imageURL}
+          width={200}
+          height={200}
+          className="rounded-full mx-auto border-2 border-sky-600"
+          alt="avatar"
+        />
+      ) : (
+        <UploadThing />
+      )}
+
       <form
         onSubmit={handleSubmit(onSubmitForm)}
-        className="flex flex-col gap-4 w-full"
+        className="flex flex-col mt-6 gap-4 w-full"
       >
-        <div>
+        {/* <div>
           <label htmlFor="">Add Your Picture</label>
           <input
             className="px-4 p-2 mt-2 rounded-md border-gray-300 border w-full"
@@ -94,7 +86,7 @@ const Submit = () => {
               </span>
             )}
           </p>
-        </div>
+        </div> */}
 
         <div>
           <label htmlFor="">Describe Your Self</label>

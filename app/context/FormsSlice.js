@@ -1,4 +1,7 @@
-const { createSlice } = require("@reduxjs/toolkit");
+"use client";
+
+import { createSlice } from "@reduxjs/toolkit";
+
 const initialState = {
   data: {},
   currentStep: 1,

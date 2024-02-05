@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addNewInf, nextStep, prevStep } from "@/app/context/FormsSlice";
+import { addNewInf, nextStep, prevStep } from "../../context/FormsSlice";
 import { useDispatch, useSelector } from "react-redux";
 const formSchema = z.object({
   title: z.string().min(3, { message: "Please enter Project Name " }),

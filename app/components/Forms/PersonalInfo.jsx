@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewInf, nextStep } from "@/app/context/FormsSlice";
+import { addNewInf, nextStep } from "../../context/FormsSlice";
 const formSchema = z.object({
   firstName: z
     .string()

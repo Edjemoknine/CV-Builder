@@ -5,3 +5,51 @@
 body {
   background: #ccc;
 }
+.tagsClass {
+  padding: 10px;
+}
+.tagInputClass {
+  padding: 5px;
+}
+.tagInputFieldClass {
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  border: 1px solid rgb(201, 201, 201);
+}
+.selectedClass {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  min-height: 150px;
+  /* background-color: red; */
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.selectedLanguages {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  min-height: 50px;
+
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.tagClass {
+  padding: 5px 10px;
+  background-color: rgb(199, 199, 199);
+  border-radius: 5px;
+  margin: 5px;
+  margin-bottom: 5px;
+}
+.removeClass {
+  color: red;
+  margin-left: 5px;
+  font-size: 20px;
+}

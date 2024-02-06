@@ -1,12 +1,8 @@
 "use client";
 import Steps from "../components/Steps";
 import StepForm from "../components/StepForm";
-import { useSelector } from "react-redux";
 
 const Wizard = () => {
-  const { data } = useSelector((store) => store);
-  console.log(data);
-
   const steps = [
     { number: 1, name: "Your Info" },
     { number: 2, name: "Education" },

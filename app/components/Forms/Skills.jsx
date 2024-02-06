@@ -1,38 +1,59 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-
+import { WithContext as ReactTags } from "react-tag-input";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addNewInf, nextStep, prevStep } from "../../context/FormsSlice";
 import { useDispatch, useSelector } from "react-redux";
-const formSchema = z.object({
-  skills: z.string(),
-  competenties: z.string(),
-  // .min(3, { message: "Please enter skill is Required" }),
-  // lastName: z.string().min(3, { message: "Please enter LastName is Required" }),
-});
+import { useState } from "react";
+
 const Skills = () => {
   const dispatch = useDispatch();
-  const { data } = useSelector((store) => store);
+  // const { data } = useSelector((store) => store);
 
-  const {
-    formState: { errors },
-    handleSubmit,
-    register,
-    trigger,
-  } = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      skills: data?.skills,
-      competenties: data?.competenties,
-    },
-  });
+  // ____________________________________
 
-  const onSubmitForm = (data) => {
-    console.log(data);
-    dispatch(addNewInf(data));
-    dispatch(nextStep());
+  const KeyCodes = {
+    comma: 188,
+    enter: 13,
+  };
+
+  const delimiters = [KeyCodes.comma, KeyCodes.enter];
+
+  const [skills, setSkills] = useState([]);
+
+  const handleDelete = (i) => {
+    setSkills(skills.filter((tag, index) => index !== i));
+  };
+
+  const handleAddition = (tag) => {
+    setSkills([...skills, tag]);
+  };
+
+  const [competence, setCompetence] = useState([]);
+
+  const handleDeleteCompet = (i) => {
+    setCompetence(competence.filter((tag, index) => index !== i));
+  };
+
+  const handleAdditionCompet = (tag) => {
+    setCompetence([...competence, tag]);
+  };
+
+  const [Err, setErr] = useState("");
+
+  const onSubmitForm = () => {
+    if (skills.length > 0 && competence.length > 0) {
+      // console.log({ skills, competence });
+      dispatch(addNewInf({ skills, competence }));
+      dispatch(nextStep());
+    } else {
+      setErr("add at least one skills and one competence");
+    }
+    setTimeout(() => {
+      setErr("");
+    }, 2000);
   };
 
   return (
@@ -41,60 +62,61 @@ const Skills = () => {
       <p className="text-xl mb-10 mt-3">
         Please provide your name email, address and phone number.
       </p>
+      {Err && <p className="my-4 text-red-500">{Err}</p>}
+      <p className="">Your Skills :</p>
+      <ReactTags
+        tags={skills}
+        delimiters={delimiters}
+        handleDelete={handleDelete}
+        handleAddition={handleAddition}
+        inputFieldPosition="bottom"
+        placeholder={"Add Skill Press Enter"}
+        autocomplete
+        classNames={{
+          tags: "tagsClass",
+          tagInput: "tagInputClass",
+          tagInputField: "tagInputFieldClass",
+          selected: "selectedClass",
+          tag: "tagClass",
+          remove: "removeClass",
+        }}
+      />
+      <p className="mt-4">
+        Your Competencies :{" "}
+        <span className="text-gray-400">(ex: Troubleshooting)</span>
+      </p>
+      <ReactTags
+        tags={competence}
+        placeholder={"Add Competencies Press Enter"}
+        delimiters={delimiters}
+        handleDelete={handleDeleteCompet}
+        handleAddition={handleAdditionCompet}
+        inputFieldPosition="bottom"
+        autocomplete
+        classNames={{
+          tags: "tagsClass",
+          tagInput: "tagInputClass",
+          tagInputField: "tagInputFieldClass",
+          selected: "selectedClass",
+          tag: "tagClass",
+        }}
+      />
 
-      <form
-        onSubmit={handleSubmit(onSubmitForm)}
-        className="flex flex-col gap-4 w-full"
-      >
-        <div>
-          <label htmlFor="">Your Skills</label>
-          <input
-            className="px-4 p-2 mt-2 rounded-md border-gray-300 border w-full"
-            {...register("skills")}
-            type="text"
-            placeholder="Skills"
-          />
-          <p>
-            {errors.skills?.message && (
-              <span className="text-red-500 text-[10px]">
-                {errors.skills.message}
-              </span>
-            )}
-          </p>
-        </div>
-        <div>
-          <label htmlFor="">Competenties</label>
-          <input
-            className="px-4 mt-2 p-2 rounded-md border-gray-300 border w-full"
-            {...register("competenties")}
-            type="text"
-            placeholder="Problems solving"
-          />
-          <p>
-            {errors.competenties?.message && (
-              <span className="text-red-500 text-[10px]">
-                {errors.competenties.message}
-              </span>
-            )}
-          </p>
-        </div>
-
-        <div className="flex justify-between">
-          <button
-            className="bg-blue-500 rounded-md px-4 py-2 cursor-pointer hover:bg-blue-700 duration-300 text-white"
-            type="button"
-            onClick={() => dispatch(prevStep())}
-          >
-            {"<"} Previous
-          </button>
-          <button
-            className="bg-blue-500 rounded-md px-4 py-2 cursor-pointer hover:bg-blue-700 duration-300 text-white"
-            type="submit"
-          >
-            Save and Continue {">"}
-          </button>
-        </div>
-      </form>
+      <div className="flex justify-between">
+        <button
+          className="bg-blue-500 rounded-md px-4 py-2 cursor-pointer hover:bg-blue-700 duration-300 text-white"
+          type="button"
+          onClick={() => dispatch(prevStep())}
+        >
+          {"<"} Previous
+        </button>
+        <button
+          className="bg-blue-500 rounded-md px-4 py-2 cursor-pointer hover:bg-blue-700 duration-300 text-white"
+          onClick={onSubmitForm}
+        >
+          Save and Continue {">"}
+        </button>
+      </div>
     </>
   );
 };

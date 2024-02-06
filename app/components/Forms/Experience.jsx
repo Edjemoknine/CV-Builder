@@ -6,6 +6,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewInf, nextStep, prevStep } from "../../context/FormsSlice";
+import { useState } from "react";
 const formSchema = z.object({
   company: z
     .string()
@@ -21,27 +22,48 @@ const formSchema = z.object({
 const Experience = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((store) => store);
-
+  // console.log(data);
+  const { experiences } = data;
+  // console.log(experiences);
+  const [defaults, setDefaults] = useState(0);
+  console.log(defaults);
+  const [Experiences, setExperiences] = useState(
+    experiences ? [...experiences] : []
+  );
   const {
     formState: { errors },
     handleSubmit,
     register,
-    trigger,
   } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      company: data?.company,
-      position: data?.position,
-      description: data?.description,
-      from: data?.from,
-      to: data?.to,
+      company: Experiences[defaults]?.company,
+      position: Experiences[defaults]?.position,
+      description: Experiences[defaults]?.description,
+      from: Experiences[defaults]?.from,
+      to: Experiences[defaults]?.to,
     },
   });
 
   const onSubmitForm = (data) => {
-    console.log(data);
-    dispatch(addNewInf(data));
-    dispatch(nextStep());
+    setExperiences((prev) => [...prev, data]);
+  };
+
+  const [Error, setError] = useState("");
+  const GoNext = () => {
+    if (Experiences.length > 0) {
+      dispatch(addNewInf({ experiences: Experiences }));
+      dispatch(nextStep());
+    } else {
+      setError("Add at least one experiment");
+    }
+    setTimeout(() => {
+      setError("");
+    }, 2000);
+  };
+
+  const removeExp = (id) => {
+    setExperiences(Experiences.filter((e) => e.company !== id));
   };
 
   return (
@@ -64,9 +86,9 @@ const Experience = () => {
             placeholder="company"
           />
           <p>
-            {errors.comapany?.message && (
+            {errors.company?.message && (
               <span className="text-red-500 text-[10px]">
-                {errors.comapany.message}
+                {errors.company.message}
               </span>
             )}
           </p>
@@ -92,7 +114,7 @@ const Experience = () => {
           <textarea
             className="px-4 mt-2 p-2 rounded-md border-gray-300 border w-full"
             {...register("description")}
-            rows={5}
+            rows={3}
             placeholder="description"
           />
           <p>
@@ -135,7 +157,35 @@ const Experience = () => {
             )}
           </p>
         </div>
-
+        <div className="mb-6 flex justify-end">
+          <button
+            className="bg-lime-500 rounded-md px-4 py-2 cursor-pointer hover:bg-blue-700 duration-300 text-white"
+            type="submit"
+          >
+            Add New Experience
+          </button>
+        </div>
+        {Error && <div className="text-red-500 my-3">{Error}</div>}
+        {Experiences.length > 0 && (
+          <div className="my-6 border rounded-md p-3 flex items-center flex-wrap gap-4">
+            {Experiences.map((exp, i) => (
+              <div
+                className="bg-slate-200 p-4 flex items-center  m-2 rounded-md"
+                key={exp.company}
+              >
+                <p onClick={() => setDefaults(i)} className="cursor-pointer">
+                  {exp.company} Experience
+                </p>
+                <span
+                  onClick={() => removeExp(exp.company)}
+                  className="text-red-500 text-xl ml-3 cursor-pointer"
+                >
+                  x
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="flex justify-between">
           <button
             className="bg-blue-500 rounded-md px-4 py-2 cursor-pointer hover:bg-blue-700 duration-300 text-white"
@@ -146,7 +196,8 @@ const Experience = () => {
           </button>
           <button
             className="bg-blue-500 rounded-md px-4 py-2 cursor-pointer hover:bg-blue-700 duration-300 text-white"
-            type="submit"
+            onClick={GoNext}
+            type="button"
           >
             Save and Continue {">"}
           </button>

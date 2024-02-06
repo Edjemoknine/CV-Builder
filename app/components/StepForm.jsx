@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 
 const StepForm = () => {
   const { currentStep } = useSelector((store) => store);
-  const step = currentStep;
+  const step = 2;
   const renderForm = () => {
     if (step == 1) return <Personal />;
     if (step == 2) return <Education />;

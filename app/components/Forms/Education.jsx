@@ -6,6 +6,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewInf, nextStep, prevStep } from "../../context/FormsSlice";
+import { useState } from "react";
 const formSchema = z.object({
   eductionLevel: z
     .string()
@@ -22,7 +23,13 @@ const formSchema = z.object({
 const Education = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((store) => store);
-
+  const { educations } = data;
+  // console.log(experiences);
+  const [defaults, setDefaults] = useState(0);
+  console.log(defaults);
+  const [Educations, setEducations] = useState(
+    educations ? [...educations] : []
+  );
   const {
     formState: { errors },
     handleSubmit,
@@ -40,9 +47,33 @@ const Education = () => {
   });
 
   const onSubmitForm = (data) => {
-    console.log(data);
-    dispatch(addNewInf(data));
-    dispatch(nextStep());
+    setEducations((prev) => [...prev, data]);
+  };
+  const [certafications, setCertafications] = useState([]);
+  const [certa, setCerta] = useState({});
+  const handleChange = (e) => {
+    setCerta({ ...certa, [e.target.name]: e.target.value });
+  };
+  const addCerta = () => {
+    setCertafications((prev) => [...prev, certa]);
+    console.log(certafications);
+    setCerta({});
+  };
+  const [Error, setError] = useState("");
+  const GoNext = () => {
+    if (Educations.length > 0) {
+      dispatch(addNewInf({ educations: Educations, certafications }));
+      dispatch(nextStep());
+    } else {
+      setError("Add at least one education achievement");
+    }
+    setTimeout(() => {
+      setError("");
+    }, 2000);
+  };
+
+  const removeExp = (id) => {
+    setEducations(Educations.filter((e) => e.eductionLevel !== id));
   };
 
   return (
@@ -140,6 +171,73 @@ const Education = () => {
           </p>
         </div>
 
+        <div className="mb-6 flex justify-end">
+          <button
+            className="bg-lime-500 rounded-md px-4 py-2 cursor-pointer hover:bg-blue-700 duration-300 text-white"
+            type="submit"
+          >
+            Add New Experience
+          </button>
+        </div>
+
+        <div>
+          <h1>Certaficate or Courses</h1>
+          <div>
+            <input
+              className="px-4 mt-2 p-2 rounded-md border-gray-300 border w-full"
+              type="text"
+              placeholder="certafication title"
+              name="certafication"
+              onChange={handleChange}
+            />
+            <div className="flex gap-3 my-3">
+              <input
+                className="px-4 mt-2 p-2 rounded-md border-gray-300 border w-full"
+                type="text"
+                name="link"
+                onChange={handleChange}
+                placeholder="certafication Link"
+              />
+              <input
+                className="px-4 mt-2 p-2 rounded-md border-gray-300 border w-full"
+                type="date"
+                name="date"
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="my-3 flex justify-end">
+            <button
+              className="px-4 py-2 rounded-md text-white bg-lime-500"
+              onClick={addCerta}
+            >
+              add
+            </button>
+          </div>
+        </div>
+
+        {Error && <div className="text-red-500 my-3">{Error}</div>}
+        {Educations.length > 0 && (
+          <div className="my-6 border rounded-md p-3 flex items-center flex-wrap gap-4">
+            {Educations.map((exp, i) => (
+              <div
+                className="bg-slate-200 p-4 flex items-center  m-2 rounded-md"
+                key={exp.eductionLevel}
+              >
+                <p onClick={() => setDefaults(i)} className="cursor-pointer">
+                  {exp.eductionLevel} {exp.field}
+                </p>
+                <span
+                  onClick={() => removeExp(exp.eductionLevel)}
+                  className="text-red-500 text-xl ml-3 cursor-pointer"
+                >
+                  x
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+
         <div className="flex justify-between">
           <button
             className="bg-blue-500 rounded-md px-4 py-2 cursor-pointer hover:bg-blue-700 duration-300 text-white"
@@ -150,7 +248,7 @@ const Education = () => {
           </button>
           <button
             className="bg-blue-500 rounded-md px-4 py-2 cursor-pointer hover:bg-blue-700 duration-300 text-white"
-            type="submit"
+            onClick={GoNext}
           >
             Save and Continue {">"}
           </button>

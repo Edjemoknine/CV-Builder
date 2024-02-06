@@ -6,6 +6,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addNewInf, nextStep, prevStep } from "../../context/FormsSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 const formSchema = z.object({
   title: z.string().min(3, { message: "Please enter Project Name " }),
 
@@ -19,6 +20,10 @@ const formSchema = z.object({
 const ProjectForm = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((store) => store);
+  const { myProjects } = data;
+
+  const [projects, setProjects] = useState(myProjects ? [...myProjects] : []);
+  const [defaults, setdefaults] = useState(0);
 
   const {
     formState: { errors },
@@ -28,18 +33,34 @@ const ProjectForm = () => {
   } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: data?.title,
-      description: data?.description,
-      tech: data?.tech,
-      from: data?.from,
-      to: data?.to,
+      title: projects[defaults]?.title,
+      description: projects[defaults]?.description,
+      tech: projects[defaults]?.tech,
+      from: projects[defaults]?.from,
+      to: projects[defaults]?.to,
     },
   });
 
   const onSubmitForm = (data) => {
-    console.log(data);
-    dispatch(addNewInf(data));
-    dispatch(nextStep());
+    setProjects((prev) => [...prev, data]);
+  };
+
+  const [Error, setError] = useState("");
+  const GoNext = () => {
+    if (projects.length > 0) {
+      console.log(projects);
+      // dispatch(addNewInf({ myProjects: projects }));
+      // dispatch(nextStep());
+    } else {
+      setError("Add at least one experiment");
+    }
+    setTimeout(() => {
+      setError("");
+    }, 2000);
+  };
+
+  const removeExp = (id) => {
+    setProjects(projects.filter((e) => e.title !== id));
   };
 
   return (
@@ -132,6 +153,36 @@ const ProjectForm = () => {
             )}
           </p>
         </div>
+        <div className="mb-6 flex justify-end">
+          <button
+            className="bg-lime-500 rounded-md px-4 py-2 cursor-pointer hover:bg-blue-700 duration-300 text-white"
+            type="submit"
+          >
+            Add New Project
+          </button>
+        </div>
+
+        {Error && <div className="text-red-500 my-3">{Error}</div>}
+        {projects.length > 0 && (
+          <div className="my-6 border rounded-md p-3 flex items-center flex-wrap gap-4">
+            {projects.map((exp, i) => (
+              <div
+                className="bg-slate-200 p-4 flex items-center  m-2 rounded-md"
+                key={exp.title}
+              >
+                <p onClick={() => setdefaults(i)} className="cursor-pointer">
+                  {exp.title}
+                </p>
+                <span
+                  onClick={() => removeExp(exp.company)}
+                  className="text-red-500 text-xl ml-3 cursor-pointer"
+                >
+                  x
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className="flex justify-between">
           <button
@@ -143,7 +194,7 @@ const ProjectForm = () => {
           </button>
           <button
             className="bg-blue-500 rounded-md px-4 py-2 cursor-pointer hover:bg-blue-700 duration-300 text-white"
-            type="submit"
+            onClick={GoNext}
           >
             Save and Continue {">"}
           </button>

@@ -21,6 +21,7 @@
     "react-hook-form": "^7.50.0",
     "react-redux": "^9.1.0",
     "react-tag-input": "^6.8.1",
+    "redux-persist": "^6.0.0",
     "uploadthing": "^6.3.3",
     "zod": "^3.22.4"
   },

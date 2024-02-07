@@ -23,16 +23,16 @@ const ProjectForm = () => {
   const { myProjects } = data;
 
   const [projects, setProjects] = useState(myProjects ? [...myProjects] : []);
-  const [defaults, setdefaults] = useState(0);
+  const [defaults, setdefaults] = useState(null);
 
   const {
     formState: { errors },
     handleSubmit,
     register,
-    trigger,
+    reset,
   } = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    values: {
       title: projects[defaults]?.title,
       description: projects[defaults]?.description,
       tech: projects[defaults]?.tech,
@@ -42,15 +42,39 @@ const ProjectForm = () => {
   });
 
   const onSubmitForm = (data) => {
-    setProjects((prev) => [...prev, data]);
+    const check = projects.some((exp) => exp.title === data.title);
+    console.log(check);
+
+    if (check) {
+      setProjects((projects) =>
+        projects.map((old) => {
+          if (old.title === data.title) {
+            old.title = data.title;
+            old.description = data.description;
+            old.tech = data.tech;
+            old.from = data.from;
+            old.to = data.to;
+          }
+
+          return old;
+        })
+      );
+      setdefaults(null);
+      reset();
+    } else {
+      setProjects((prev) => [...prev, data]);
+    }
+
+    reset();
+    setdefaults(null);
   };
 
   const [Error, setError] = useState("");
   const GoNext = () => {
     if (projects.length > 0) {
       console.log(projects);
-      // dispatch(addNewInf({ myProjects: projects }));
-      // dispatch(nextStep());
+      dispatch(addNewInf({ myProjects: projects }));
+      dispatch(nextStep());
     } else {
       setError("Add at least one experiment");
     }

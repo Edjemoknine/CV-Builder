@@ -13,25 +13,33 @@ const Builder = () => {
         <div className="p-6 text-gray-300 bg-blue-950 min-h-screen  rounded-md h-full">
           <div>
             {data?.imageUrl && (
-              <Image src={""} width={200} height={200} alt="avatar" />
+              <Image src={imageUrl} width={200} height={200} alt="avatar" />
             )}
             <div>
               <h2 className=" border-b-4 py-2 text-2xl font-bold">About Me</h2>
-              <p className="mt-3">{data?.aboutMe}</p>
+              <p className="mt-3">{data?.data?.aboutMe}</p>
             </div>
             <div>
               <h2 className="border-b-4 py-2 text-2xl font-bold">
                 Competencies
               </h2>
-              <p className="mt-3">{data?.competenties}</p>
+              <ul className="mt-3">
+                {data?.competence?.map((cop) => (
+                  <li key={cop.id}>{cop.text}</li>
+                ))}
+              </ul>
             </div>
             <div>
               <h2 className=" border-b-4 py-2 text-2xl font-bold">Interests</h2>
-              <p className="mt-3">{data?.interests}</p>
+              <p className="mt-3">{data?.data?.interests}</p>
             </div>
             <div>
               <h2 className="border-b-4 py-2 text-2xl font-bold">Languages</h2>
-              <p className="mt-3">{data?.communications}</p>
+              <p className="mt-3">
+                {data?.languages.map((lang) => (
+                  <p key={lang.id}>{lang.text}</p>
+                ))}
+              </p>
             </div>
           </div>
         </div>

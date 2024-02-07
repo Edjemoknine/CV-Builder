@@ -23,7 +23,7 @@ const formSchema = z.object({
 const PersonalInfo = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((store) => store);
-  console.log(data);
+  // console.log(data);
   const {
     formState: { errors },
     handleSubmit,

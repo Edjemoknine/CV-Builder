@@ -25,7 +25,7 @@ const Experience = () => {
   // console.log(data);
   const { experiences } = data;
   // console.log(experiences);
-  const [defaults, setDefaults] = useState(0);
+  const [defaults, setDefaults] = useState(null);
   console.log(defaults);
   const [Experiences, setExperiences] = useState(
     experiences ? [...experiences] : []
@@ -34,9 +34,10 @@ const Experience = () => {
     formState: { errors },
     handleSubmit,
     register,
+    reset,
   } = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    values: {
       company: Experiences[defaults]?.company,
       position: Experiences[defaults]?.position,
       description: Experiences[defaults]?.description,
@@ -46,7 +47,31 @@ const Experience = () => {
   });
 
   const onSubmitForm = (data) => {
-    setExperiences((prev) => [...prev, data]);
+    const check = Experiences.some((exp) => exp.company === data.company);
+    console.log(check);
+
+    if (check) {
+      setExperiences((Experiences) =>
+        Experiences.map((old) => {
+          if (old.company === data.company) {
+            old.company = data.company;
+            old.position = data.position;
+            old.description = data.description;
+            old.from = data.from;
+            old.to = data.to;
+          }
+
+          return old;
+        })
+      );
+      setDefaults(null);
+      reset();
+    } else {
+      setExperiences((prev) => [...prev, data]);
+    }
+
+    setDefaults(null);
+    reset();
   };
 
   const [Error, setError] = useState("");

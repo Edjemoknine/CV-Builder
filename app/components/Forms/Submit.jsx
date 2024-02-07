@@ -16,18 +16,17 @@ const formSchema = z.object({
     message: "Please enter describe yourself at least 50 characters",
   }),
   interests: z.string().min(3, { message: "Please enter Some interests " }),
-  // communications: z
-  //   .string()
-  //   .min(3, { message: "Please enter language you can speak " }),
   avatar: z.any(),
   role: z.string(),
+  linkedin: z.string().url(),
+  github: z.string().url(),
+  portfolio: z.string().url(),
 });
 const Submit = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((store) => store);
   const router = useRouter();
   const searchParams = useSearchParams();
-  // const params = new URLSearchParams(searchParams);
   const imageURL = searchParams.get("imageUrl");
   const [languages, setLanguages] = useState([]);
 
@@ -35,20 +34,21 @@ const Submit = () => {
     formState: { errors },
     handleSubmit,
     register,
-    trigger,
   } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       aboutMe: data?.aboutMe,
       interests: data?.interests,
-      // communications: data?.communications,
       role: data?.role,
+      linkedin: data?.linkedin,
+      github: data?.github,
+      portfolio: data?.portfolio,
     },
   });
 
   const onSubmitForm = (data) => {
     console.log(data);
-    dispatch(addNewInf({ About: { data, languages } }));
+    dispatch(addNewInf({ imageURL, data, languages }));
     router.push("/builder");
   };
   const KeyCodes = {
@@ -88,13 +88,64 @@ const Submit = () => {
         onSubmit={handleSubmit(onSubmitForm)}
         className="flex flex-col mt-6 gap-4 w-full"
       >
+        <div className="flex flex-col iems-center gap-3">
+          <div>
+            <label htmlFor="">LinkedIn Link</label>
+            <input
+              className="px-4 p-2 mt-2 rounded-md border-gray-300 border w-full"
+              {...register("linkedin")}
+              type="url"
+              placeholder="Linkedin Link ..."
+            />
+            <p>
+              {errors.linkedin?.message && (
+                <span className="text-red-500 text-[10px]">
+                  {errors.linkedin.message}
+                </span>
+              )}
+            </p>
+          </div>
+          <div>
+            <label htmlFor="">Github Link</label>
+            <input
+              className="px-4 p-2 mt-2 rounded-md border-gray-300 border w-full"
+              {...register("github")}
+              type="url"
+              placeholder="Your Github Link ..."
+            />
+            <p>
+              {errors.github?.message && (
+                <span className="text-red-500 text-[10px]">
+                  {errors.github.message}
+                </span>
+              )}
+            </p>
+          </div>
+          <div>
+            <label htmlFor="">Portfolio Link</label>
+            <input
+              className="px-4 p-2 mt-2 rounded-md border-gray-300 border w-full"
+              {...register("portfolio")}
+              type="url"
+              placeholder="Your Personal Portfolio link ..."
+            />
+            <p>
+              {errors.portfolio?.message && (
+                <span className="text-red-500 text-[10px]">
+                  {errors.portfolio.message}
+                </span>
+              )}
+            </p>
+          </div>
+        </div>
+
         <div>
           <label htmlFor="">Work Position</label>
           <input
             className="px-4 p-2 mt-2 rounded-md border-gray-300 border w-full"
             {...register("role")}
             type="text"
-            placeholder="I'm as Software Developer ..."
+            placeholder="ex: Software engineer ..."
           />
           <p>
             {errors.role?.message && (

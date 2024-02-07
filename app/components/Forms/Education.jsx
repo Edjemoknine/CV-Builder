@@ -25,7 +25,7 @@ const Education = () => {
   const { data } = useSelector((store) => store);
   const { educations } = data;
   // console.log(experiences);
-  const [defaults, setDefaults] = useState(0);
+  const [defaults, setDefaults] = useState(null);
   console.log(defaults);
   const [Educations, setEducations] = useState(
     educations ? [...educations] : []
@@ -34,30 +34,74 @@ const Education = () => {
     formState: { errors },
     handleSubmit,
     register,
-    trigger,
+    reset,
   } = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      eductionLevel: data?.eductionLevel,
-      field: data?.field,
-      institution: data?.institution,
-      Instcity: data?.Instcity,
-      GraduationYear: data?.GraduationYear,
+    values: {
+      eductionLevel: Educations[defaults]?.eductionLevel,
+      field: Educations[defaults]?.field,
+      institution: Educations[defaults]?.institution,
+      Instcity: Educations[defaults]?.Instcity,
+      GraduationYear: Educations[defaults]?.GraduationYear,
     },
   });
 
   const onSubmitForm = (data) => {
-    setEducations((prev) => [...prev, data]);
+    const check = Educations.some(
+      (exp) => exp.eductionLevel === data.eductionLevel
+    );
+    console.log(check);
+
+    if (check) {
+      setEducations((Educations) =>
+        Educations.map((old) => {
+          if (old.eductionLevel === data.eductionLevel) {
+            old.eductionLevel = data.eductionLevel;
+            old.field = data.field;
+            old.institution = data.institution;
+            old.Instcity = data.Instcity;
+            old.GraduationYear = data.GraduationYear;
+          }
+
+          return old;
+        })
+      );
+      setDefaults(null);
+      reset();
+    } else {
+      setEducations((prev) => [...prev, data]);
+    }
+
+    reset();
+    setDefaults(null);
   };
   const [certafications, setCertafications] = useState([]);
-  const [certa, setCerta] = useState({});
+  const [certa, setCerta] = useState({ certafication: "", link: "", date: "" });
   const handleChange = (e) => {
     setCerta({ ...certa, [e.target.name]: e.target.value });
   };
   const addCerta = () => {
-    setCertafications((prev) => [...prev, certa]);
-    console.log(certafications);
-    setCerta({});
+    const check = certafications.some(
+      (cert) => cert.certafication === certa.certafication
+    );
+    console.log(check);
+    if (check) {
+      setCertafications((certafications) =>
+        certafications.map((old) => {
+          if (old.certafication === certa.certafication) {
+            old.certafication = certa.certafication;
+            old.link = certa.link;
+            old.date = certa.date;
+          }
+          return old;
+        })
+      );
+    } else {
+      setCertafications((prev) => [...prev, certa]);
+    }
+
+    // console.log(certafications);
+    setCerta({ certafication: "", link: "", date: "" });
   };
   const [Error, setError] = useState("");
   const GoNext = () => {
@@ -75,7 +119,16 @@ const Education = () => {
   const removeExp = (id) => {
     setEducations(Educations.filter((e) => e.eductionLevel !== id));
   };
-
+  const removeCert = (id) => {
+    setCertafications(certafications.filter((e) => e.certafication !== id));
+  };
+  const updateCerta = (cert) => {
+    setCerta({
+      certafication: cert.certafication,
+      link: cert.link,
+      date: cert.date,
+    });
+  };
   return (
     <>
       <h1 className="tex text-5xl font-bold">Education Background</h1>
@@ -179,6 +232,27 @@ const Education = () => {
             Add New Experience
           </button>
         </div>
+        {Error && <div className="text-red-500 my-3">{Error}</div>}
+        {Educations.length > 0 && (
+          <div className="my-6 border rounded-md p-3 flex items-center flex-wrap gap-4">
+            {Educations.map((exp, i) => (
+              <div
+                className="bg-slate-200 p-4 flex items-center  m-2 rounded-md"
+                key={exp.eductionLevel}
+              >
+                <p onClick={() => setDefaults(i)} className="cursor-pointer">
+                  {exp.eductionLevel} {exp.field}
+                </p>
+                <span
+                  onClick={() => removeExp(exp.eductionLevel)}
+                  className="text-red-500 text-xl ml-3 cursor-pointer"
+                >
+                  x
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
 
         <div>
           <h1>Certaficate or Courses</h1>
@@ -188,6 +262,7 @@ const Education = () => {
               type="text"
               placeholder="certafication title"
               name="certafication"
+              value={certa.certafication}
               onChange={handleChange}
             />
             <div className="flex gap-3 my-3">
@@ -195,6 +270,7 @@ const Education = () => {
                 className="px-4 mt-2 p-2 rounded-md border-gray-300 border w-full"
                 type="text"
                 name="link"
+                value={certa.link}
                 onChange={handleChange}
                 placeholder="certafication Link"
               />
@@ -202,6 +278,7 @@ const Education = () => {
                 className="px-4 mt-2 p-2 rounded-md border-gray-300 border w-full"
                 type="date"
                 name="date"
+                value={certa.date}
                 onChange={handleChange}
               />
             </div>
@@ -216,19 +293,19 @@ const Education = () => {
           </div>
         </div>
 
-        {Error && <div className="text-red-500 my-3">{Error}</div>}
-        {Educations.length > 0 && (
+        {/* {Error && <div className="text-red-500 my-3">{Error}</div>} */}
+        {certafications.length > 0 && (
           <div className="my-6 border rounded-md p-3 flex items-center flex-wrap gap-4">
-            {Educations.map((exp, i) => (
+            {certafications.map((exp, i) => (
               <div
                 className="bg-slate-200 p-4 flex items-center  m-2 rounded-md"
-                key={exp.eductionLevel}
+                key={exp?.certafication}
               >
-                <p onClick={() => setDefaults(i)} className="cursor-pointer">
-                  {exp.eductionLevel} {exp.field}
+                <p onClick={() => updateCerta(exp)} className="cursor-pointer">
+                  {exp?.certafication}
                 </p>
                 <span
-                  onClick={() => removeExp(exp.eductionLevel)}
+                  onClick={() => removeCert(exp.certafication)}
                   className="text-red-500 text-xl ml-3 cursor-pointer"
                 >
                   x

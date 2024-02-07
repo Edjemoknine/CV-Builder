@@ -8,6 +8,7 @@ import jsPDF from "jspdf";
 import { useState } from "react";
 import { imagesCv } from "../../public/index";
 import {
+  Template0,
   Template1,
   Template2,
   Template3,
@@ -20,8 +21,10 @@ import {
 
 const Builder = () => {
   const { data } = useSelector((store) => store);
-  const [TempNum, setTempNum] = useState(1);
+  console.log(data);
+  const [TempNum, setTempNum] = useState(0);
   const templateRender = () => {
+    if (TempNum === 0) return <Template0 data={data} />;
     if (TempNum === 1) return <Template1 data={data} />;
     if (TempNum === 2) return <Template2 data={data} />;
     if (TempNum === 3) return <Template3 data={data} />;
@@ -69,10 +72,10 @@ const Builder = () => {
         <div className="w-full col-span-2">
           <div className=" flex flex-wrap gap-x-2 ">
             {imagesCv.map((cv, i) => (
-              <div onClick={() => setTempNum(i + 1)} className="h-40 w-24 ">
+              <div onClick={() => setTempNum(i)} className="h-40 w-24 ">
                 <Image
                   className={`object-contain cursor-pointer hover:border-2 border-sky-500 ${
-                    TempNum === i + 1 && "border-2"
+                    TempNum === i && "border-2"
                   }`}
                   src={cv}
                   alt={"resume"}

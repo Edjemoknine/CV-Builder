@@ -19,7 +19,7 @@ const Template1 = ({ data }) => {
                 Competencies
               </h2>
               <ul className="mt-3">
-                {data?.competence?.map((cop) => (
+                {data?.Competencies?.map((cop) => (
                   <li className="mb-2" key={cop.id}>
                     {cop.text}
                   </li>
@@ -33,7 +33,7 @@ const Template1 = ({ data }) => {
             <div>
               <h2 className="border-b-4 py-2 text-2xl font-bold">Languages</h2>
               <p className="mt-3">
-                {data?.languages?.map((lang) => (
+                {data?.Languages?.map((lang) => (
                   <p key={lang.id}>{lang.text}</p>
                 ))}
               </p>
@@ -122,7 +122,7 @@ const Template1 = ({ data }) => {
               <div>
                 <h2 className=" border-b-4 py-2 text-2xl font-bold">Skills</h2>
                 <div className="mt-3 flex flex-wrap gap-3">
-                  {data?.skills?.map((skill) => (
+                  {data?.Skills?.map((skill) => (
                     <span
                       className="py-1.5 px-3 rounded bg-slate-200"
                       key={skill.id}

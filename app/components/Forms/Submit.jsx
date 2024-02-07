@@ -28,7 +28,8 @@ const Submit = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const imageURL = searchParams.get("imageUrl");
-  const [languages, setLanguages] = useState([]);
+  const { Languages } = data;
+  const [languages, setLanguages] = useState(Languages ? [...Languages] : []);
 
   const {
     formState: { errors },
@@ -37,19 +38,21 @@ const Submit = () => {
   } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      aboutMe: data?.aboutMe,
-      interests: data?.interests,
-      role: data?.role,
-      linkedin: data?.linkedin,
-      github: data?.github,
-      portfolio: data?.portfolio,
+      aboutMe: data?.data?.aboutMe,
+      interests: data?.data?.interests,
+      role: data?.data?.role,
+      linkedin: data?.data?.linkedin,
+      github: data?.data?.github,
+      portfolio: data?.data?.portfolio,
     },
   });
 
   const onSubmitForm = (data) => {
-    console.log(data);
-    dispatch(addNewInf({ imageURL, data, languages }));
+    console.log({ imageURL, languages });
+    // if (imageURL && languages.length !== 0) {
+    dispatch(addNewInf({ imageURL, data, Languages: languages }));
     router.push("/builder");
+    // }
   };
   const KeyCodes = {
     comma: 188,
@@ -74,7 +77,7 @@ const Submit = () => {
 
       {imageURL ? (
         <Image
-          src={imageURL}
+          src={imageURL || data?.imageURL}
           width={200}
           height={200}
           className="rounded-full mx-auto border-2 border-sky-600"

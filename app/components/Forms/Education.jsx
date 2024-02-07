@@ -23,7 +23,7 @@ const formSchema = z.object({
 const Education = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((store) => store);
-  const { educations } = data;
+  const { educations, certaficate } = data;
   // console.log(experiences);
   const [defaults, setDefaults] = useState(null);
   console.log(defaults);
@@ -75,7 +75,9 @@ const Education = () => {
     reset();
     setDefaults(null);
   };
-  const [certafications, setCertafications] = useState([]);
+  const [certafications, setCertafications] = useState(
+    certaficate ? [...certaficate] : []
+  );
   const [certa, setCerta] = useState({ certafication: "", link: "", date: "" });
   const handleChange = (e) => {
     setCerta({ ...certa, [e.target.name]: e.target.value });
@@ -106,7 +108,9 @@ const Education = () => {
   const [Error, setError] = useState("");
   const GoNext = () => {
     if (Educations.length > 0) {
-      dispatch(addNewInf({ educations: Educations, certafications }));
+      dispatch(
+        addNewInf({ educations: Educations, certaficate: certafications })
+      );
       dispatch(nextStep());
     } else {
       setError("Add at least one education achievement");

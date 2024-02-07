@@ -1,8 +1,8 @@
 import React from "react";
 import { Github, Linkedin, Link } from "lucide-react";
-
-const Template1 = ({data}) => {
-  return  <div className="col-span-4 pdf bg-white rounded-md  p-3">
+const Template1 = ({ data }) => {
+  return (
+    <div className="col-span-4 pdf bg-white rounded-md  p-3">
       <div className="grid md:grid-cols-3 grid-cols-1 h-full ">
         <div className="p-6 text-gray-300 bg-blue-950 min-h-screen  rounded-md h-full">
           <div className="flex flex-col gap-5">
@@ -89,8 +89,8 @@ const Template1 = ({data}) => {
                             {exp.position}
                           </p>
                         </div>
-                        <span>
-                          {exp.from} - {exp.to}
+                        <span className="font-semibold">
+                          {exp.from.slice(0, 7)} - {exp.to.slice(0, 7)}
                         </span>
                       </div>
                       <p className="mt-2 text-xs w-[70%]">{exp.description}</p>
@@ -108,8 +108,8 @@ const Template1 = ({data}) => {
                       <div className="flex items-start justify-between">
                         <h3 className="text- font-semibold">{pro.title}</h3>
 
-                        <span>
-                          {pro.from} - {pro.to}
+                        <span className="font-semibold">
+                          {pro.from.slice(0, 7)} - {pro.to.slice(0, 7)}
                         </span>
                       </div>
                       <p className="mt-2">{pro.description}</p>
@@ -186,6 +186,7 @@ const Template1 = ({data}) => {
         </div>
       </div>
     </div>
+  );
 };
 
 export default Template1;

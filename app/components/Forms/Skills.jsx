@@ -1,17 +1,14 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { WithContext as ReactTags } from "react-tag-input";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { addNewInf, nextStep, prevStep } from "../../context/FormsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 
 const Skills = () => {
   const dispatch = useDispatch();
-  // const { data } = useSelector((store) => store);
-
+  const { data } = useSelector((store) => store);
+  const { Skills, Competencies } = data;
   // ____________________________________
 
   const KeyCodes = {
@@ -21,7 +18,7 @@ const Skills = () => {
 
   const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState(Skills ? [...Skills] : []);
 
   const handleDelete = (i) => {
     setSkills(skills.filter((tag, index) => index !== i));
@@ -31,7 +28,9 @@ const Skills = () => {
     setSkills([...skills, tag]);
   };
 
-  const [competence, setCompetence] = useState([]);
+  const [competence, setCompetence] = useState(
+    Competencies ? [...Competencies] : []
+  );
 
   const handleDeleteCompet = (i) => {
     setCompetence(competence.filter((tag, index) => index !== i));
@@ -46,7 +45,7 @@ const Skills = () => {
   const onSubmitForm = () => {
     if (skills.length > 0 && competence.length > 0) {
       // console.log({ skills, competence });
-      dispatch(addNewInf({ skills, competence }));
+      dispatch(addNewInf({ Skills: skills, Competencies: competence }));
       dispatch(nextStep());
     } else {
       setErr("add at least one skills and one competence");

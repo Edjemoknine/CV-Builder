@@ -2,7 +2,7 @@ import React from "react";
 import { Github, Linkedin, Link } from "lucide-react";
 const Template1 = ({ data }) => {
   return (
-    <div className="col-span-4 pdf bg-white rounded-md  p-3">
+    <div className="pdf bg-white rounded-md  p-3">
       <div className="grid md:grid-cols-3 grid-cols-1 h-full ">
         <div className="p-6 text-gray-300 bg-blue-950 min-h-screen  rounded-md h-full">
           <div className="flex flex-col gap-5">

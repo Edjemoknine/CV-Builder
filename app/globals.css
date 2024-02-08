@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  background: #ccc;
+  background: #fafafa;
 }
 .tagsClass {
   padding: 10px;

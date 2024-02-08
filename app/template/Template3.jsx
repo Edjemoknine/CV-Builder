@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 const Template1 = ({ data }) => {
   return (
-    <div className="col-span-4 pdf bg-white rounded-md ">
+    <div className="col-span-4 pdf bg-white rounded-md pb-6 ">
       <div className=" min-h-screen  rounded-md h-full">
         <div className="flex flex-col gap-5">
           <div className="border-b-8 pt-8 px-8 pb-4 bg-orange-50 border-gray-500">
@@ -115,11 +115,9 @@ const Template1 = ({ data }) => {
                   <h2 className="border-b-4 py-2 text-2xl font-bold">
                     Competencies
                   </h2>
-                  <ul className="mt-3 flex flex-wrap gap-4">
+                  <ul className="mt-3 flex flex-wrap gap-2">
                     {data?.Competencies?.map((cop) => (
-                      <li className="mb-2" key={cop.id}>
-                        {cop.text}
-                      </li>
+                      <li key={cop.id}>{cop.text}</li>
                     ))}
                   </ul>
                 </div>

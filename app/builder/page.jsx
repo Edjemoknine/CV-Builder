@@ -51,9 +51,9 @@ const Builder = () => {
   };
 
   return (
-    <>
+    <section className="max-w-6xl mx-auto px-4 md:px-8">
       <button
-        className="absolute top-6 hover:bg-sky-700 duration-300 right-6 px-4 py-2 rounded-md bg-sky-500 text-white"
+        className="absolute top-[85px] hover:bg-sky-700 duration-300 right-10 px-3 py-1.5 rounded-md bg-sky-500 text-sm text-white"
         disabled={loading}
         onClick={downloadPDF}
       >
@@ -61,20 +61,20 @@ const Builder = () => {
         {loading ? "Downloading.." : "Download"}
       </button>
       <div>
-        <h1 className="text-4xl font-semibold mb-3">Review your resume</h1>
+        <h1 className="text-2xl font-semibold mb-3">Review your resume</h1>
         <p>
           Review and make any final changes to your resume. Then download and
           apply for jobs!
         </p>
       </div>
-      <div className="grid md:grid-cols-6 gap-6 mt-10 ">
-        {templateRender()}
+      <div className="grid md:grid-cols-7 gap-6 mt-10 ">
+        <div className="col-span-5 shadow-lg">{templateRender()}</div>
         <div className="w-full col-span-2">
           <div className=" flex flex-wrap gap-x-2 ">
             {imagesCv.map((cv, i) => (
               <div onClick={() => setTempNum(i)} className="h-40 w-24 ">
                 <Image
-                  className={`object-contain cursor-pointer hover:border-2 border-sky-500 ${
+                  className={`object-contain shadow cursor-pointer hover:border-2 border-sky-500 ${
                     TempNum === i && "border-2"
                   }`}
                   src={cv}
@@ -87,7 +87,7 @@ const Builder = () => {
           </div>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 

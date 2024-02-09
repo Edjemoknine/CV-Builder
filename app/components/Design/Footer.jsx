@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import { Twitter, Facebook, LinkedinIcon, Instagram } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -8,7 +9,7 @@ const Footer = () => {
         <div className="col-span-2">
           <Link
             href={"/"}
-            className="text-2xl flex items-center gap-2  text-sky-600 font-bold"
+            className="md:text-2xl text-xl flex items-center gap-2  text-sky-600 font-bold"
           >
             <svg
               id="logo-37"
@@ -65,10 +66,20 @@ const Footer = () => {
                 fill="#25CAAC"
               ></path>{" "}
             </svg>{" "}
-            Builder
+            CV Builder
           </Link>
+          <p className="mt-4 max-w-[250px] leading-7 font-semibold text-gray-800">
+            You Wanna Get Your Dream Job Pick one of many world-class templates
+            and build your resume in minutes.
+          </p>
+          <div className="flex gap-3 mt-8">
+            <LinkedinIcon className="hover:text-sky-500 text-sky-800 cursor-pointer" />
+            <Facebook className="hover:text-sky-500 text-sky-800 cursor-pointer" />
+            <Twitter className="hover:text-sky-500 text-sky-800 cursor-pointer" />
+            <Instagram className="hover:text-sky-500 text-sky-800 cursor-pointer" />
+          </div>
         </div>
-        <div className="col-span-5 grid md:grid-cols-3 gap-6">
+        <div className="col-span-5 grid md:grid-cols-3 sm:grid-cols-2 gap-6">
           <div className="flex flex-col gap-4">
             <h3 className="font-bold text-[18px]">Build Your Resume</h3>
             <a href="">Basic Resume Examples</a>

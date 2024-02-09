@@ -47,7 +47,7 @@ const Template1 = ({ data }) => {
             <h3 className="text-xl">{data?.data?.role}</h3>
 
             <div className="mt-4">
-              <div className="flex items-center gap-10">
+              <div className="flex items-center flex-wrap gap-6">
                 <span>
                   <p className="font-bold">Phone</p>
                   <p className="text-xs">{data?.phone}</p>
@@ -61,7 +61,7 @@ const Template1 = ({ data }) => {
                   <p className="text-xs">{data?.address}</p>
                 </span>
               </div>
-              <div className="flex my-4 items-center gap-10">
+              <div className="flex my-4 items-center flex-wrap gap-10">
                 <span className="flex gap-2">
                   <Linkedin className=" p-1 border rounded-full" />
                   <a href={data?.data?.linkedin}>Linkedin</a>

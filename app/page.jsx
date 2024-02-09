@@ -671,7 +671,6 @@ export default function Home() {
           </svg>
         </div>
       </section>
-      <Footer />
     </main>
   );
 }

@@ -18,11 +18,15 @@ import {
   Template7,
   Template8,
 } from "../template/index";
+import { useSearchParams } from "next/navigation";
 
 const Builder = () => {
   const { data } = useSelector((store) => store);
-  console.log(data);
-  const [TempNum, setTempNum] = useState(0);
+  // console.log(data);
+  const searchParams = useSearchParams();
+  const STupNum = Number(searchParams.get("TempNum")) || 0;
+  const [TempNum, setTempNum] = useState(STupNum);
+
   const templateRender = () => {
     if (TempNum === 0) return <Template0 data={data} />;
     if (TempNum === 1) return <Template1 data={data} />;
@@ -51,9 +55,9 @@ const Builder = () => {
   };
 
   return (
-    <section className="max-w-6xl mx-auto px-4 md:px-8">
+    <section className="max-w-6xl  mx-auto px-4 md:px-8">
       <button
-        className="absolute top-[85px] hover:bg-sky-700 duration-300 right-10 px-3 py-1.5 rounded-md bg-sky-500 text-sm text-white"
+        className="absolute md:right-20 top-[85px] hover:bg-sky-700 duration-300 right-4 px-3 py-1.5 rounded-md bg-sky-500 text-sm text-white"
         disabled={loading}
         onClick={downloadPDF}
       >
@@ -67,10 +71,10 @@ const Builder = () => {
           apply for jobs!
         </p>
       </div>
-      <div className="grid md:grid-cols-7 gap-6 mt-10 ">
-        <div className="col-span-5 shadow-lg">{templateRender()}</div>
+      <div className="grid md:grid-cols-7  grid-cols-1 w-full gap-6 mt-10 ">
+        <div className="md:col-span-5 w-full shadow-lg">{templateRender()}</div>
         <div className="w-full col-span-2">
-          <div className=" flex flex-wrap gap-x-2 ">
+          <div className=" bg-red-40 flex flex-wrap gap-x-2 ">
             {imagesCv.map((cv, i) => (
               <div onClick={() => setTempNum(i)} className="h-40 w-24 ">
                 <Image

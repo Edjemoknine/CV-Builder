@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowUp } from "lucide-react";
 import ImagesScroll from "./components/Design/ImagesScroll.jsx";
 import { features } from "./constants/Features.js";
-import Footer from "./components/Design/Footer.jsx";
+
 export default function Home() {
   return (
     <main>

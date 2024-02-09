@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
+import { signIn, useSession, signOut } from "next-auth/react";
 
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -14,6 +15,7 @@ const Navbar = () => {
   const { data } = useSelector((store) => store);
   // console.log(data);
   const showMResume = Object.keys(data).length > 0;
+  const { data: session } = useSession();
 
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -117,6 +119,24 @@ const Navbar = () => {
               >
                 Build My Resume
               </Link>
+              <div>
+                {!session?.user ? (
+                  <button
+                    onClick={() => signIn("github")}
+                    className="px-3 py-1.5 bg-gradient-to-r from-sky-400 to-green-400 text-white rounded-lg"
+                  >
+                    Sign In
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => signOut()}
+                    className="px-3 py-1.5 bg-gradient-to-r from-sky-500 to-blue-800 text-white rounded-lg"
+                  >
+                    Sign Out
+                  </button>
+                )}
+              </div>
+
               <div
                 className="md:hidden flex justify-center items-center border hover:border-sky-700 border-gray-500 group rounded-md cursor-pointer px-2 p-1 hover:b-sky-600"
                 onClick={() => setOpen(!open)}

@@ -1,7 +1,15 @@
 import { Book, Check, X } from "lucide-react";
+import { getServerSession } from "next-auth";
 import React from "react";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import ManageUserSubsc from "../components/ManageUserSubsc";
+import { getUserSubscriptionPlan } from "../../helpers/subscription";
 
-const Pricing = () => {
+const Pricing = async () => {
+  const session = await getServerSession(authOptions);
+  // console.log(session);
+  const subscripe = await getUserSubscriptionPlan();
+  console.log(subscripe);
   return (
     <section className="mx-auto max-w-6xl px-4 md:px-8 pt-40">
       <div className="mb-32">
@@ -36,11 +44,14 @@ const Pricing = () => {
               <X className="text-red-500" /> No Expert Guidance
             </li>
           </ul>
-          <div className="flex justify-center py-6">
-            <button className="border text-sky-500 font-medium border-sky-500 px-4 py-2 rounded-lg hover:text-white hover:bg-sky-500 duration-300">
-              Choose Plan
-            </button>
-          </div>
+          <ManageUserSubsc
+            userId={session.user.email}
+            stripeCustomerId={subscripe.stripeCustomerId}
+            stripePriceId={subscripe.stripePriceId}
+            isCanceled={subscripe.isCanceled}
+            isSubscribed={subscripe.isSubscribed}
+            // isCurrentPlan={subscripe.}
+          />
         </div>
         <div className="bg-white shadow-xl -translate-y-10 p-3">
           <div className="flex flex-col items-center py-3 gap-4 mb-3">
@@ -70,11 +81,14 @@ const Pricing = () => {
               <X className="text-red-500" /> No Expert Guidance
             </li>
           </ul>
-          <div className="flex justify-center py-6">
-            <button className="border text-sky-500 font-medium border-sky-500 px-4 py-2 rounded-lg hover:text-white hover:bg-sky-500 duration-300">
-              Choose Plan
-            </button>
-          </div>
+          <ManageUserSubsc
+            userId={session.user.email}
+            stripeCustomerId={subscripe.stripeCustomerId}
+            stripePriceId={subscripe.stripePriceId}
+            isCanceled={subscripe.isCanceled}
+            isSubscribed={subscripe.isSubscribed}
+            // isCurrentPlan={subscripe.}
+          />
         </div>
         <div className="bg-white shadow-xl p-3">
           <div className="flex flex-col items-center py-3 gap-4 mb-3">
@@ -104,11 +118,14 @@ const Pricing = () => {
               <Check className="text-sky-500" /> Expert Guidance
             </li>
           </ul>
-          <div className="flex justify-center py-6">
-            <button className="border text-sky-500 font-medium border-sky-500 px-4 py-2 rounded-lg hover:text-white hover:bg-sky-500 duration-300">
-              Choose Plan
-            </button>
-          </div>
+          <ManageUserSubsc
+            userId={session.user.email}
+            stripeCustomerId={subscripe.stripeCustomerId}
+            stripePriceId={subscripe.stripePriceId}
+            isCanceled={subscripe.isCanceled}
+            isSubscribed={subscripe.isSubscribed}
+            // isCurrentPlan={subscripe.}
+          />
         </div>
       </div>
     </section>

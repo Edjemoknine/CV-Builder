@@ -13,6 +13,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@prisma/client": "^5.9.1",
     "@reduxjs/toolkit": "^2.1.0",
+    "@stripe/stripe-js": "^2.4.0",
     "@uploadthing/react": "^6.2.2",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
@@ -27,6 +28,7 @@
     "react-tag-input": "^6.8.1",
     "redux-persist": "^6.0.0",
     "slick-carousel": "^1.8.1",
+    "stripe": "^14.16.0",
     "uploadthing": "^6.3.3",
     "zod": "^3.22.4"
   },

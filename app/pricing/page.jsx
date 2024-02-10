@@ -2,14 +2,18 @@ import { Book, Check, X } from "lucide-react";
 import { getServerSession } from "next-auth";
 import React from "react";
 import { authOptions } from "../api/auth/[...nextauth]/route";
-import ManageUserSubsc from "../components/ManageUserSubsc";
-import { getUserSubscriptionPlan } from "../../helpers/subscription";
+import SubscribeButton from "../components/SubscribeButton";
+import { stripe } from "../../helpers/stripe";
 
+const getPrices = async () => {
+  const prices = await stripe.prices.list();
+  return prices.data;
+};
 const Pricing = async () => {
+  const prices = await getPrices();
+  console.log(prices);
   const session = await getServerSession(authOptions);
-  // console.log(session);
-  const subscripe = await getUserSubscriptionPlan();
-  console.log(subscripe);
+
   return (
     <section className="mx-auto max-w-6xl px-4 md:px-8 pt-40">
       <div className="mb-32">
@@ -18,10 +22,14 @@ const Pricing = async () => {
       <div className="grid md:grid-cols-3 gap-6">
         <div className="bg-white shadow-xl p-3">
           <div className="flex flex-col items-center py-3 gap-4 mb-3">
-            <h2 className="font-extrabold text-[24px] ">Free</h2>
+            <h2 className="font-extrabold text-[24px] ">
+              {prices[2].nickname}
+            </h2>
             <Book className="text-sky-500" size={90} />
             <div>
-              <h1 className="text-5xl font-extrabold text-sky-500">$0</h1>
+              <h1 className="text-5xl font-extrabold text-sky-500">
+                ${prices[2].unit_amount / 100}
+              </h1>
               <p className="text-gray-500 text-center mt-3 text-xs">
                 Per Month
               </p>
@@ -44,21 +52,18 @@ const Pricing = async () => {
               <X className="text-red-500" /> No Expert Guidance
             </li>
           </ul>
-          <ManageUserSubsc
-            userId={session.user.email}
-            stripeCustomerId={subscripe.stripeCustomerId}
-            stripePriceId={subscripe.stripePriceId}
-            isCanceled={subscripe.isCanceled}
-            isSubscribed={subscripe.isSubscribed}
-            // isCurrentPlan={subscripe.}
-          />
+          <SubscribeButton />
         </div>
         <div className="bg-white shadow-xl -translate-y-10 p-3">
           <div className="flex flex-col items-center py-3 gap-4 mb-3">
-            <h2 className="font-extrabold text-[24px] ">Populair</h2>
+            <h2 className="font-extrabold text-[24px] ">
+              {prices[1].nickname}
+            </h2>
             <Book className="text-sky-500" size={90} />
             <div>
-              <h1 className="text-5xl font-extrabold text-sky-500">$6</h1>
+              <h1 className="text-5xl font-extrabold text-sky-500">
+                ${prices[1].unit_amount / 100}
+              </h1>
               <p className="text-gray-500 text-center mt-3 text-xs">
                 Per Month
               </p>
@@ -81,21 +86,18 @@ const Pricing = async () => {
               <X className="text-red-500" /> No Expert Guidance
             </li>
           </ul>
-          <ManageUserSubsc
-            userId={session.user.email}
-            stripeCustomerId={subscripe.stripeCustomerId}
-            stripePriceId={subscripe.stripePriceId}
-            isCanceled={subscripe.isCanceled}
-            isSubscribed={subscripe.isSubscribed}
-            // isCurrentPlan={subscripe.}
-          />
+          <SubscribeButton />
         </div>
         <div className="bg-white shadow-xl p-3">
           <div className="flex flex-col items-center py-3 gap-4 mb-3">
-            <h2 className="font-extrabold text-[24px] ">Pro</h2>
+            <h2 className="font-extrabold text-[24px] ">
+              {prices[0].nickname}
+            </h2>
             <Book className="text-sky-500" size={90} />
             <div>
-              <h1 className="text-5xl font-extrabold text-sky-500">$10</h1>
+              <h1 className="text-5xl font-extrabold text-sky-500">
+                ${prices[0].unit_amount / 100}
+              </h1>
               <p className="text-gray-500 text-center mt-3 text-xs">
                 Per Month
               </p>
@@ -118,14 +120,7 @@ const Pricing = async () => {
               <Check className="text-sky-500" /> Expert Guidance
             </li>
           </ul>
-          <ManageUserSubsc
-            userId={session.user.email}
-            stripeCustomerId={subscripe.stripeCustomerId}
-            stripePriceId={subscripe.stripePriceId}
-            isCanceled={subscripe.isCanceled}
-            isSubscribed={subscripe.isSubscribed}
-            // isCurrentPlan={subscripe.}
-          />
+          <SubscribeButton />
         </div>
       </div>
     </section>

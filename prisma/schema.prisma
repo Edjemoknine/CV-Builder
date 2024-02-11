@@ -46,10 +46,17 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  stripeCustomerId       String?
-  stripeSubscriptionId   String?
-  stripePriceId          String?
-  stripeCurrentPeriodEnd DateTime?
+  plan                 String?
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+}
+
+model Log {
+  id      String   @id @default(cuid()) @map("_id")
+  userId  String
+  method  String
+  status  Int
+  created DateTime @default(now())
 }
 
 model VerificationToken {

@@ -15,7 +15,7 @@ const Page = () => {
         </p>
         <h1 className="text-2xl font-semibold text-center">Sign In</h1>
         <button
-          onClick={() => signIn("github", { callbackUrl: "/builder" })}
+          onClick={() => signIn("github", { callbackUrl: "/pricing" })}
           className="text-white font-medium hover:bg-slate-800 duration-300 bg-slate-700 rounded-lg cursor-pointer py-2 px-4"
         >
           Sign in with Github

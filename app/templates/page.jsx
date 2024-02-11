@@ -24,6 +24,7 @@ const Templates = () => {
       <div className=" flex flex-wrap gap-4 ">
         {imagesCv.map((cv, i) => (
           <div
+            key={i}
             onClick={() => router.push(`/wizard/?TempNum=${i}`)}
             className="mb-3 hover:shadow-md h-52 w-40 "
           >

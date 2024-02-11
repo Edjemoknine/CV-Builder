@@ -47,7 +47,7 @@ const ImagesScroll = () => {
     <div className="pb-6 max-w-5xl mx-auto">
       <Slider {...settings}>
         {imagesCv.map((img) => (
-          <div>
+          <div key={img}>
             <Image
               className="object-contain hover:border cursor-pointer border-sky-600 duration-300 shadow-xl"
               src={img}

@@ -66,7 +66,7 @@ const Builder = () => {
   return (
     <section className="max-w-6xl  mx-auto px-4 md:px-8">
       <button
-        className="absolute md:right-20 top-[85px] hover:bg-sky-700 duration-300 right-4 px-3 py-1.5 rounded-md bg-sky-500 text-sm text-white"
+        className="absolute md:right-20 top-[105px] md:top-[85px] hover:bg-sky-700 duration-300 right-4 px-3 py-1.5 rounded-md bg-sky-500 text-sm text-white"
         disabled={loading}
         onClick={downloadPDF}
       >

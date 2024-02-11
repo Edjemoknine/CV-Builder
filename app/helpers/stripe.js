@@ -1,7 +1,8 @@
 import { getServerSession } from "next-auth";
 import Stripe from "stripe";
-import { authOptions } from "../app/api/auth/[...nextauth]/route";
+// import { authOptions } from "../app/api/auth/[...nextauth]/route";
 import { PrismaClient } from "@prisma/client";
+import { authOptions } from "../lib/authOptions";
 
 const prisma = new PrismaClient();
 

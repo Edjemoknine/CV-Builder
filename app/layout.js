@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "./context/ReduxProvider";
-import AuthProvider from "../helpers/AuthProvider";
+import AuthProvider from "./helpers/AuthProvider";
 const inter = Inter({ subsets: ["latin"] });
 import Navbar from "./components/Design/Navbar.jsx";
 import Footer from "./components/Design/Footer";

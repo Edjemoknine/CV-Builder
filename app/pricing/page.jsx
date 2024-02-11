@@ -6,7 +6,7 @@ import {
   createCustomerIfNull,
   hasSubscription,
   stripe,
-} from "../../helpers/stripe";
+} from "../helpers/stripe";
 import mustBeLoggedIn from "../lib/auth";
 
 const getPrices = async () => {

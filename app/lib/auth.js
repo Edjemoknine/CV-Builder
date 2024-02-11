@@ -1,8 +1,9 @@
 const { getServerSession } = require("next-auth");
 
 import { redirect } from "next/navigation";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+// import { authOptions } from "../api/auth/[...nextauth]/route";
 import { PrismaClient } from "@prisma/client";
+import { authOptions } from "./authOptions";
 const prisma = new PrismaClient();
 
 const mustBeLoggedIn = async () => {
